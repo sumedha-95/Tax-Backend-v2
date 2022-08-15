@@ -17,8 +17,10 @@ import java.util.stream.Stream;
 @Service
 public abstract class FilesStorageServiceImpl implements FilesStorageService{
 
-    private String path = "E:\\Tax\\Tax-Frontend-ll\\Documents\\";
-    private final Path root = Paths.get("E:\\Tax\\Tax-Frontend-ll\\Documents\\");
+    //private String path = "E:\\Tax\\Tax-Frontend-ll\\Documents\\";
+    private String path = "E:\\Tax\\Tax-Frontend-v2\\Documents\\";
+    //private final Path root = Paths.get("E:\\Tax\\Tax-Frontend-ll\\Documents\\");
+    private final Path root = Paths.get("E:\\Tax\\Tax-Frontend-v2\\Documents\\");
 
     @Override
     public void init(){

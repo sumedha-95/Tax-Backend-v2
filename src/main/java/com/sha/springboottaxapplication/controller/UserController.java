@@ -20,7 +20,7 @@ import java.util.Optional;
  * @time 13:57
  */
 @RestController
-@RequestMapping("api/user")//pre-path
+@RequestMapping("api/user")
 public class UserController
 {
     @Autowired
@@ -61,4 +61,9 @@ public class UserController
         return new ResponseEntity<>(userService.saveNewUser(user), HttpStatus.CREATED);
     }
 
+    @PutMapping("/update/{id}") //api/user
+    public ResponseEntity<?> updateUser(@RequestBody User user)
+    {
+        return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
+    }
 }

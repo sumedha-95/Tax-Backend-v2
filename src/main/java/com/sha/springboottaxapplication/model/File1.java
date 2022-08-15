@@ -5,13 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "file")
-public class File {
+public class File1 {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,4 +31,7 @@ public class File {
     @Lob
     @Column
     private byte[] data;
+
+    @Column(name = "create_time")
+    private LocalDateTime createTime;
 }

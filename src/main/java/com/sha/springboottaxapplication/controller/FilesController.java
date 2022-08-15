@@ -1,6 +1,6 @@
 package com.sha.springboottaxapplication.controller;
 
-import com.sha.springboottaxapplication.model.File;
+import com.sha.springboottaxapplication.model.File1;
 import com.sha.springboottaxapplication.model.User;
 import com.sha.springboottaxapplication.repository.FileDBRepository;
 import com.sha.springboottaxapplication.repository.UserRepository;
@@ -8,11 +8,11 @@ import com.sha.springboottaxapplication.service.FilesStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +33,7 @@ public class FilesController {
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile []file1 , @RequestParam String formmsg, HttpServletRequest request) {
         MultipartFile file = null;
         String message = "Successfully";
+         String path = "E:\\Tax\\Tax-Frontend-v2\\Documents\\";
 
         System.out.println(formmsg);
         System.out.println(request.getUserPrincipal().getName());
@@ -44,24 +45,28 @@ public class FilesController {
 
         for (int i = 0 ; i <file1.length; i++){
 
-            if (!file1[i].isEmpty())
+            if (!file1[i].isEmpty()){
+
+
             try {
                 file = file1[i];
+                 File file2 = new File("E:\\Tax\\Tax-Frontend-v2\\Documents\\"+file.getOriginalFilename());
 
                 try{
-                    storageService.save(file);
+//                    storageService.save(file1[i]);
+                    file.transferTo(file2);
                 }catch (Exception e){
-
+                   System.out.println(e +""+ i);
                 }
 
                 System.out.println(file.getOriginalFilename());
 //                System.out.println(messages); ,@RequestParam String messages
 
-                File info = new File();
+                File1 info = new File1();
                 info.setName(file.getOriginalFilename());
 
 
-                info.setUrl("E:/Tax/Tax-Frontend-ll/Documents/" + file.getOriginalFilename());
+                info.setUrl("E:/Tax/Tax-Frontend-v2/Documents/" + file.getOriginalFilename());
                 info.setData(file.getBytes());
                 info.setMessage(formmsg);
                 info.setUser_id(String.valueOf(user.get().getId()));
@@ -80,17 +85,18 @@ public class FilesController {
             }
 
         }
+        }
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
     }
 
     @GetMapping("/files")
-    public List<File> getListFiles() {
+    public List<File1> getListFiles() {
         return  fileDBRepository.findAll();
     }
 
 
     @GetMapping("/file/{userId}")
-    public List<File> getFileByid(@PathVariable String userId){
+    public List<File1> getFileByid(@PathVariable String userId){
             return fileDBRepository.findByFileID(userId);
     }
 

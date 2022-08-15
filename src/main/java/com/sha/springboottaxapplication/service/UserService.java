@@ -26,4 +26,6 @@ public interface UserService
     void deleteuser(Long userId);
 
     User saveNewUser(User user);
+
+
 }
