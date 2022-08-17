@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -28,10 +29,13 @@ public class File1 {
 
     private String message;
 
-    @Lob
-    @Column
-    private byte[] data;
+//    @Lob
+//    @Column
+//    private byte[] data;
 
     @Column(name = "create_time")
     private LocalDateTime createTime;
+
+    @Column(name = "date")
+    private Date date;
 }

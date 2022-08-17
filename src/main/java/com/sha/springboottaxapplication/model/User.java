@@ -19,7 +19,8 @@ public class User
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", unique = true, nullable = false, length = 100)
+    //unique = true,
+    @Column(name = "username",  nullable = false, length = 100)
     private String username;
 
     @Column(name = "lastname")

@@ -1,7 +1,9 @@
 package com.sha.springboottaxapplication.controller;
 
 import com.sha.springboottaxapplication.model.File1;
+import com.sha.springboottaxapplication.model.File2;
 import com.sha.springboottaxapplication.model.User;
+import com.sha.springboottaxapplication.repository.File2Repository;
 import com.sha.springboottaxapplication.repository.FileDBRepository;
 import com.sha.springboottaxapplication.repository.UserRepository;
 import com.sha.springboottaxapplication.service.FilesStorageService;
@@ -25,6 +27,9 @@ public class FilesController {
 
     @Autowired
     FileDBRepository fileDBRepository;
+
+    @Autowired
+    File2Repository file2Repository;
 
     @Autowired
     UserRepository userRepository;
@@ -67,7 +72,7 @@ public class FilesController {
 
 
                 info.setUrl("E:/Tax/Tax-Frontend-v2/Documents/" + file.getOriginalFilename());
-                info.setData(file.getBytes());
+//                info.setData(file.getBytes());
                 info.setMessage(formmsg);
                 info.setUser_id(String.valueOf(user.get().getId()));
                 fileDBRepository.save(info);
@@ -98,6 +103,11 @@ public class FilesController {
     @GetMapping("/file/{userId}")
     public List<File1> getFileByid(@PathVariable String userId){
             return fileDBRepository.findByFileID(userId);
+    }
+
+    @GetMapping("/dates")
+    public List<File2> findByDate(@RequestBody String date){
+        return file2Repository.findByDate(date);
     }
 
 
