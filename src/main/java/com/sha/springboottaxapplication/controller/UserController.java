@@ -1,8 +1,10 @@
 package com.sha.springboottaxapplication.controller;
 
+import com.sha.springboottaxapplication.exception.UserNotFoundException;
 import com.sha.springboottaxapplication.model.Product;
 import com.sha.springboottaxapplication.model.Role;
 import com.sha.springboottaxapplication.model.User;
+import com.sha.springboottaxapplication.repository.UserRepository;
 import com.sha.springboottaxapplication.security.UserPrinciple;
 import com.sha.springboottaxapplication.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class UserController
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @PutMapping("change/{role}")//api/user/change/{role}
     public ResponseEntity<?> changeRole(@AuthenticationPrincipal UserPrinciple userPrinciple, @PathVariable Role role)
     {
@@ -47,13 +52,13 @@ public class UserController
 
     }
 
-    @DeleteMapping("{userId}") //api/user/{userId}
-    public ResponseEntity<?> deleteuser(@PathVariable Long userId)
-    {
-        userService.deleteuser(userId);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @DeleteMapping("{userId}") //api/user/{userId}
+//    public ResponseEntity<?> deleteuser(@PathVariable Long userId)
+//    {
+//        userService.deleteuser(userId);
+//
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
     @PostMapping //api/user
     public ResponseEntity<?> saveNewUser(@RequestBody User user)
@@ -61,9 +66,30 @@ public class UserController
         return new ResponseEntity<>(userService.saveNewUser(user), HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}") //api/user
-    public ResponseEntity<?> updateUser(@RequestBody User user)
-    {
-        return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
+//    @PutMapping("/update/{id}") //api/user
+//    public ResponseEntity<?> updateUser(@RequestBody User user)
+//    {
+//        return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
+//    }
+
+    @PutMapping("/user/{id}")
+    User updateUser(@RequestBody User newUser,@PathVariable Long id){
+        return userRepository.findById(id).map(user -> {
+            user.setUsername(newUser.getUsername());
+            user.setLastname(newUser.getLastname());
+            user.setName(newUser.getName());
+            return userRepository.save(user);
+        }).orElseThrow(() ->new UserNotFoundException(id));
     }
+
+    @DeleteMapping("user/{id}")
+    String deleteUser(@PathVariable Long id){
+        if(!userRepository.existsById(id)){
+            throw new UserNotFoundException(id);
+        }
+        userRepository.deleteById(id);
+        return "User with id "+  id  + "has been deleted success";
+    }
+
+
 }

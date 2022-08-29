@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("http://localhost:8080")
+@CrossOrigin("http://localhost:8081")
 public class FilesController {
 
     @Autowired(required = false)
@@ -38,7 +38,7 @@ public class FilesController {
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile []file1 , @RequestParam String formmsg, HttpServletRequest request) {
         MultipartFile file = null;
         String message = "Successfully";
-         String path = "E:\\Tax\\Tax-Frontend-v2\\Documents\\";
+         String path = "E:\\Tax\\Tax-Frontend-v2-main\\Documents\\";
 
         System.out.println(formmsg);
         System.out.println(request.getUserPrincipal().getName());
@@ -46,16 +46,14 @@ public class FilesController {
         Optional<User> user = userRepository.findByUsername(request.getUserPrincipal().getName());
         System.out.println(user.get().getId());
 
-
-
-        for (int i = 0 ; i <file1.length; i++){
+       for (int i = 0 ; i <file1.length; i++){
 
             if (!file1[i].isEmpty()){
 
 
             try {
                 file = file1[i];
-                 File file2 = new File("E:\\Tax\\Tax-Frontend-v2\\Documents\\"+file.getOriginalFilename());
+                 File file2 = new File("E:\\Tax\\Tax-Frontend-v2-main\\Documents\\"+file.getOriginalFilename());
 
                 try{
 //                    storageService.save(file1[i]);
@@ -71,7 +69,7 @@ public class FilesController {
                 info.setName(file.getOriginalFilename());
 
 
-                info.setUrl("E:/Tax/Tax-Frontend-v2/Documents/" + file.getOriginalFilename());
+                info.setUrl("E:/Tax/Tax-Frontend-v2-main/Documents/" + file.getOriginalFilename());
 //                info.setData(file.getBytes());
                 info.setMessage(formmsg);
                 info.setUser_id(String.valueOf(user.get().getId()));
